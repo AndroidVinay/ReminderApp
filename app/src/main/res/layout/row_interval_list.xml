@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+android:layout_height="?android:attr/listPreferredItemHeight"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+
+    <android.support.v7.widget.AppCompatRadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rdb_interval"
+        android:layout_margin="8dp"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txt_interval_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
+        android:text="a"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="a"
+        android:id="@+id/txt_count"
+        android:textColor="@android:color/black"
+
+        />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="10dp"
+        android:layout_height="20dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/arrow_"
+        />
+</LinearLayout>
