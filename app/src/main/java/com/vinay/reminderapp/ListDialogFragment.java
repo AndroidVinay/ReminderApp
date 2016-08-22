@@ -21,7 +21,7 @@ public class ListDialogFragment extends DialogFragment {
 
 	ArrayList<Integer> mSelectedItems;
 	ArrayList<String> mSelectedData;
-	String[] arrayList;
+	String[] array;
 	String title;
 	@ArrayRes
 	int arrayData;
@@ -53,7 +53,11 @@ public class ListDialogFragment extends DialogFragment {
 		mSelectedItems = new ArrayList();  // Where we track the selected items
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Set the dialog title
-		arrayList = context.getResources().getStringArray(arrayData);
+		if(title.contains("day")) {
+			array = new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+		}else if(title.contains("month")) {
+			array = getActivity().getResources().getStringArray(R.array.months);
+		}
 		mSelectedData = new ArrayList<>();
 		builder.setTitle(title)
 				// Specify the list array, the items to be selected by default (null for none),
@@ -66,7 +70,7 @@ public class ListDialogFragment extends DialogFragment {
 								if (isChecked) {
 									// If the user checked the item, add it to the selected items
 									mSelectedItems.add(which);
-									mSelectedData.add(arrayList[which]);
+									mSelectedData.add(array[which]);
 								} else if (mSelectedItems.contains(which)) {
 									// Else, if the item is already in the array, remove it
 									mSelectedItems.remove(Integer.valueOf(which));
@@ -78,9 +82,7 @@ public class ListDialogFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 
-
 						getActivity().getIntent().putExtra("name", mSelectedData.toString());
-
 						getTargetFragment().onActivityResult(getTargetRequestCode(), Activity
 								.RESULT_OK, getActivity().getIntent());
 					}

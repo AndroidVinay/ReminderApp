@@ -16,7 +16,7 @@ import android.view.ViewGroup;
  */
 public class FragmentAddMedication extends Fragment {
 
-	AppCompatEditText edt_interval;
+	AppCompatEditText edt_interval,edt_schedule;
 
 	public FragmentAddMedication() {
 		// Required empty public constructor
@@ -30,11 +30,23 @@ public class FragmentAddMedication extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_add_medication, container, false);
 
 		edt_interval = (AppCompatEditText) view.findViewById(R.id.edt_interval);
+		edt_schedule = (AppCompatEditText) view.findViewById(R.id.edt_schedule);
 
 		edt_interval.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Fragment fragment = new FragmentIntervalList();
+				FragmentManager manager = getFragmentManager();
+				FragmentTransaction fragmentTransaction = manager.beginTransaction();
+				fragmentTransaction.replace(R.id.container, fragment).addToBackStack
+						(FragmentMedication.class.getSimpleName()).commit();
+			}
+		});
+
+		edt_schedule.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Fragment fragment = new FragmentScheduleDosage();
 				FragmentManager manager = getFragmentManager();
 				FragmentTransaction fragmentTransaction = manager.beginTransaction();
 				fragmentTransaction.replace(R.id.container, fragment).addToBackStack

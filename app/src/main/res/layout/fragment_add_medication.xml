@@ -50,6 +50,7 @@
         android:text="schedule and dosage"
         android:textAllCaps="true"/>
     <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/edt_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
