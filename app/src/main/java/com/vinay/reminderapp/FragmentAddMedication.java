@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +50,7 @@ public class FragmentAddMedication extends Fragment {
 			public void onClick(View view) {
 				Fragment fragment = new FragmentIntervalList();
 				FragmentManager manager = getFragmentManager();
-				fragment.setTargetFragment(fragment, 3);
+				fragment.setTargetFragment(FragmentAddMedication.this, 3);
 				FragmentTransaction fragmentTransaction = manager.beginTransaction();
 				fragmentTransaction.replace(R.id.container, fragment).addToBackStack
 						(FragmentMedication.class.getSimpleName()).commit();
@@ -59,7 +62,7 @@ public class FragmentAddMedication extends Fragment {
 			public void onClick(View view) {
 				Fragment fragment = new FragmentScheduleDosage();
 				FragmentManager manager = getFragmentManager();
-				fragment.setTargetFragment(fragment, 4);
+				fragment.setTargetFragment(FragmentAddMedication.this, 4);
 				FragmentTransaction fragmentTransaction = manager.beginTransaction();
 				fragmentTransaction.replace(R.id.container, fragment).addToBackStack
 						(FragmentMedication.class.getSimpleName()).commit();
@@ -126,9 +129,9 @@ public class FragmentAddMedication extends Fragment {
 			case 4:
 				if (resultCode == Activity.RESULT_OK) {
 					Bundle bundle = data.getExtras();
-					String result = bundle.getString("name");
-					Toast.makeText(getActivity(), "End Date " + result, Toast.LENGTH_SHORT).show();
-					btn_endDate.setText(result);
+					ArrayList<HashMap<String,String>>  tempData= (ArrayList<HashMap<String,
+							String>>) bundle.getSerializable("name");
+					Toast.makeText(getActivity(), "End Date " + tempData.toString(), Toast.LENGTH_SHORT).show();
 				}
 				break;
 		}
