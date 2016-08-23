@@ -129,9 +129,19 @@ public class FragmentAddMedication extends Fragment {
 			case 4:
 				if (resultCode == Activity.RESULT_OK) {
 					Bundle bundle = data.getExtras();
-					ArrayList<HashMap<String,String>>  tempData= (ArrayList<HashMap<String,
+					ArrayList<HashMap<String, String>> tempData = (ArrayList<HashMap<String,
 							String>>) bundle.getSerializable("name");
-					Toast.makeText(getActivity(), "End Date " + tempData.toString(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "End Date " + tempData.toString(), Toast
+							.LENGTH_SHORT).show();
+					String result = "";
+					for (int i = 0; i < tempData.size(); i++) {
+						String hr = tempData.get(i).get("hr");
+						String min = tempData.get(i).get("min");
+						String count = tempData.get(i).get("count");
+
+						result = result + hr + ":" + min + "(" + count + ")";
+
+					}
 				}
 				break;
 		}
