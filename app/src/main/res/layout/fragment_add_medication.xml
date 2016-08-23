@@ -42,7 +42,8 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:clickable="true"
-        android:editable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:hint="INTERVAL"/>
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
@@ -55,6 +56,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:focusable="false"
+        android:clickable="true"
+        android:focusableInTouchMode="false"
         android:hint="SCHEDULE AND DOSAGE"/>
 
 
@@ -78,9 +82,11 @@
                 android:text="start date"
                 android:textAllCaps="true"/>
 
-            <android.support.v7.widget.AppCompatEditText
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_startdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
                 />
         </LinearLayout>
@@ -94,12 +100,14 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="start date"
+                android:text="End date"
                 android:textAllCaps="true"/>
 
-            <android.support.v7.widget.AppCompatEditText
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_end_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
                 />
         </LinearLayout>

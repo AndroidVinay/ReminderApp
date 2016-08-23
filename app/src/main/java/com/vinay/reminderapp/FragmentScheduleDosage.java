@@ -1,13 +1,18 @@
 package com.vinay.reminderapp;
 
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -26,13 +31,12 @@ import java.util.HashMap;
  */
 public class FragmentScheduleDosage extends Fragment {
 
+	private static String TAG = FragmentScheduleDosage.class.getSimpleName();
 	SimpleAdapter simpleAdapter;
 	ListView timeList;
 	ArrayList<HashMap<String, String>> arrayIntervalList = new ArrayList<>();
 	int selectedPosition = 0;
-	HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11,
-			map12, map13, map14, map15, map16, map17, map18, map19, map20, map21, map22, map23,
-			map24;
+	HashMap<String, String> map1, map2;
 	private int mYear, mMonth, mDay, mHour, mMinute;
 
 	AppCompatButton btn_add_time;
@@ -45,7 +49,7 @@ public class FragmentScheduleDosage extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setHasOptionsMenu(true);
 		for (int i = 0; i < 24; i++) {
 			String k;
 			map1 = new HashMap<>();
@@ -58,12 +62,12 @@ public class FragmentScheduleDosage extends Fragment {
 
 			map1.put("hr", k);
 			map1.put("min", "00");
-			map1.put("dose", "");
+			map1.put("count", "");
 			arrayIntervalList.add(map1);
 			map2 = new HashMap<>();
 			map2.put("hr", k);
 			map2.put("min", "30");
-			map2.put("dose", "");
+			map2.put("count", "");
 			arrayIntervalList.add(map2);
 		}
 
@@ -85,31 +89,59 @@ public class FragmentScheduleDosage extends Fragment {
 			AppCompatTextView txt_count;
 
 			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				View view = super.getView(position, convertView, parent);
+			public View getView(final int position, View convertView, final ViewGroup parent) {
 
-				add = (ImageButton) view.findViewById(R.id.add_button);
-				minus = (ImageButton) view.findViewById(R.id.minus_button);
-				txt_count = (AppCompatTextView) view.findViewById(R.id.txt_count);
+//				if (convertView == null) {
+				convertView = super.getView(position, convertView, parent);
 
+				add = (ImageButton) convertView.findViewById(R.id.add_button);
+				minus = (ImageButton) convertView.findViewById(R.id.minus_button);
+//				}
 				final double[] count = {0.5};
+
 				add.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						count[0] = count[0] + 0.5;
-						txt_count.setText(count[0] + "");
+						View v = (View) view.getParent();
+						txt_count = (AppCompatTextView) v.findViewById(R.id.txt_count);
+						txt_count.setText("" + count[0]);
+						arrayIntervalList.get(position).put("count", count[0] + "");
+
 					}
 				});
 				minus.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						count[0] = count[0] - 0.5;
-						txt_count.setText(count[0] + "");
+						View v = (View) view.getParent();
+						txt_count = (AppCompatTextView) v.findViewById(R.id.txt_count);
+						txt_count.setText("" + count[0]);
+						arrayIntervalList.get(position).put("count", count[0] + "");
 					}
 				});
 
+				notifyDataSetChanged();
 
-				return view;
+				return convertView;
+
+			}
+
+
+			@Override
+			public Object getItem(int position) {
+				return position;
+			}
+
+
+			@Override
+			public long getItemId(int position) {
+				return position;
+			}
+
+			@Override
+			public int getCount() {
+				return arrayIntervalList.size();
 			}
 		};
 		timeList.setAdapter(simpleAdapter);
@@ -124,7 +156,6 @@ public class FragmentScheduleDosage extends Fragment {
 		});
 		return view;
 	}
-
 
 	public void timeDialog() {
 		final Calendar c = Calendar.getInstance();
@@ -193,4 +224,43 @@ public class FragmentScheduleDosage extends Fragment {
 
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main_xinput, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+		switch (id) {
+
+			case R.id.done:
+
+				ArrayList<HashMap<String, String>> tempData = new ArrayList<>();
+
+				for (int i = 0; i < arrayIntervalList.size(); i++) {
+					Log.d(TAG, " This is data: " + arrayIntervalList.get(i).get("count").toString
+							());
+					if (!(arrayIntervalList.get(i).get("count").toString().isEmpty()) || !
+							(arrayIntervalList.get(i).get("count").equalsIgnoreCase(""))) {
+						if (Double.parseDouble(arrayIntervalList.get(i).get("count").toString())
+								>= 0.5) {
+							tempData.add(arrayIntervalList.get(i));
+						}
+					}
+				}
+
+				getActivity().getIntent().putExtra("name", tempData);
+				getTargetFragment().onActivityResult(getTargetRequestCode(), Activity
+						.RESULT_OK, getActivity().getIntent());
+				getActivity().onBackPressed();
+
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 }
