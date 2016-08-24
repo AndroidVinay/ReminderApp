@@ -9,6 +9,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -29,6 +32,10 @@ public class FragmentIntervalList extends Fragment {
 	int selectedPosition = 0;
 	AppCompatCheckBox rdb_interval;
 	HashMap<String, String> map, map1, map2, map3, map4, map5;
+	public static final int XDAYS_REQUEST = 1;
+	public static final int XHOURS_REQUEST = 2;
+	public static final int SELECT_DAYS_REQUEST = 3;
+	public static final int SELECT_MONTH_REQUEST = 4;
 
 	public FragmentIntervalList() {
 
@@ -39,6 +46,7 @@ public class FragmentIntervalList extends Fragment {
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		setHasOptionsMenu(true);
 		map = new HashMap<>();
 		map.put("data", "One-time event");
 		map.put("count", "");
@@ -84,6 +92,7 @@ public class FragmentIntervalList extends Fragment {
 //				if (view == null){
 				rdb_interval = (AppCompatCheckBox) view.findViewById(R.id.rdb_interval);
 
+				rdb_interval.setClickable(false);
 				rdb_interval.setTag(position);
 
 				if (position == selectedPosition) {
@@ -100,12 +109,15 @@ public class FragmentIntervalList extends Fragment {
 						switch (position) {
 
 							case 0:
+
 								break;
 							case 1:
+
 								break;
 							case 2:
 								XInputFragment xInputFragment = new XInputFragment();
-								xInputFragment.setTargetFragment(FragmentIntervalList.this, 1);
+								xInputFragment.setTargetFragment(FragmentIntervalList.this,
+										XDAYS_REQUEST);
 								getFragmentManager()
 										.beginTransaction()
 										.replace(R.id.container, xInputFragment, "null")
@@ -118,20 +130,21 @@ public class FragmentIntervalList extends Fragment {
 										("Select" +
 												" days", R.array.weekDays);
 								dialogFrag.setTargetFragment(FragmentIntervalList
-										.this, 2);
+										.this, SELECT_DAYS_REQUEST);
 								dialogFrag.show(getFragmentManager().beginTransaction(), "day");
 								break;
 							case 4:
 								DialogFragment dialogFrag1 = ListDialogFragment.newInstance
 										("Select month", R.array.months);
 								dialogFrag1.setTargetFragment(FragmentIntervalList
-										.this, 3);
+										.this, SELECT_MONTH_REQUEST);
 								dialogFrag1.show(getFragmentManager().beginTransaction(),
 										"month");
 								break;
 							case 5:
 								XInputFragment xInputFragment1 = new XInputFragment();
-								xInputFragment1.setTargetFragment(FragmentIntervalList.this, 4);
+								xInputFragment1.setTargetFragment(FragmentIntervalList.this,
+										XHOURS_REQUEST);
 								getFragmentManager()
 										.beginTransaction()
 										.replace(R.id.container, xInputFragment1, "null")
@@ -158,8 +171,31 @@ public class FragmentIntervalList extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main_xinput, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 
+	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+		switch (id) {
+
+			case R.id.done:
+				getActivity().getIntent().putExtra("name", arrayIntervalList.get(selectedPosition)
+						.get("data") + " , " + arrayIntervalList.get(selectedPosition).get
+						("count"));
+				getTargetFragment().onActivityResult(getTargetRequestCode(), Activity
+						.RESULT_OK, getActivity().getIntent());
+				getActivity().onBackPressed();
+
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 
 
 	@Override
@@ -168,7 +204,7 @@ public class FragmentIntervalList extends Fragment {
 
 		switch (requestCode) {
 
-			case 1:
+			case XDAYS_REQUEST:
 				if (resultCode == Activity.RESULT_OK) {
 
 					Bundle bundle = data.getExtras();
@@ -179,33 +215,33 @@ public class FragmentIntervalList extends Fragment {
 
 				}
 				break;
-			case 2:
+			case SELECT_DAYS_REQUEST:
 				if (resultCode == Activity.RESULT_OK) {
 
 					Bundle bundle = data.getExtras();
 					String result = bundle.getString("name");
 					Toast.makeText(getActivity(), "2 : " + result, Toast.LENGTH_SHORT).show();
-					result = result.replaceAll("\\[", "").replaceAll("\\]","");
+					result = result.replaceAll("\\[", "").replaceAll("\\]", "");
 					map3.put("count", result + " ");
 					simpleAdapter.notifyDataSetChanged();
 				} else if (resultCode == Activity.RESULT_CANCELED) {
 
 				}
 				break;
-			case 3:
+			case SELECT_MONTH_REQUEST:
 				if (resultCode == Activity.RESULT_OK) {
 
 					Bundle bundle = data.getExtras();
 					String result = bundle.getString("name");
 					Toast.makeText(getActivity(), "3 : " + result, Toast.LENGTH_SHORT).show();
-					result = result.replaceAll("\\[", "").replaceAll("\\]","");
+					result = result.replaceAll("\\[", "").replaceAll("\\]", "");
 					map4.put("count", result + " ");
 					simpleAdapter.notifyDataSetChanged();
 				} else if (resultCode == Activity.RESULT_CANCELED) {
 
 				}
 				break;
-			case 4:
+			case XHOURS_REQUEST:
 				if (resultCode == Activity.RESULT_OK) {
 
 					Bundle bundle = data.getExtras();
@@ -220,7 +256,6 @@ public class FragmentIntervalList extends Fragment {
 		}
 
 	}
-
 
 
 }

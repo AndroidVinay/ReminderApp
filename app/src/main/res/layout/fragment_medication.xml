@@ -2,8 +2,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:background="#EFEDEE"
+                android:orientation="vertical"
                 tools:context=".FragmentMedication"
     >
 
@@ -89,8 +89,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:text="Last Login : "/>
+                    android:text="Last Login : "
+                    android:textColor="@android:color/black"/>
 
 
                 <TextView
@@ -100,6 +100,11 @@
                     android:text=" August 17,2016 at 11:23:15"/>
 
             </LinearLayout>
+<Button
+    android:id="@+id/btn_map"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="showMap"/>
 
         </LinearLayout>
 
@@ -108,7 +113,9 @@
             android:layout_height="wrap_content">
 
         </ListView>
+
     </LinearLayout>
+
 
     <Button
         android:id="@+id/btn_add_medication"
@@ -118,7 +125,8 @@
         android:layout_margin="16dp"
         android:background="@color/colorPrimary"
         android:text="Add Medication"
+        android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textAllCaps="false"/>
+        android:textSize="16sp"/>
+
 </RelativeLayout>

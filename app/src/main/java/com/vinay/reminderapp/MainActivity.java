@@ -1,9 +1,10 @@
 package com.vinay.reminderapp;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,9 +13,13 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-	Fragment fragment = new FragmentMedication();
+		//this is to stop screenshot of application
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+				WindowManager.LayoutParams.FLAG_SECURE);
+		Fragment fragment = new FragmentMedication();
 		FragmentManager manager = getSupportFragmentManager();
-		manager.beginTransaction().replace(R.id.container,fragment).addToBackStack(MainActivity.class.getSimpleName()).commit();
+		manager.beginTransaction().replace(R.id.container, fragment).addToBackStack(MainActivity
+				.class.getSimpleName()).commit();
 	}
 
 }

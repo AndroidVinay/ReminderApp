@@ -44,7 +44,8 @@
         android:clickable="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:hint="INTERVAL"/>
+        android:hint="INTERVAL"
+        android:text=""/>
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
         android:layout_marginTop="8dp"
         android:focusable="false"
         android:clickable="true"
+        android:text=""
         android:focusableInTouchMode="false"
         android:hint="SCHEDULE AND DOSAGE"/>
 
@@ -120,7 +122,8 @@
         android:layout_marginTop="8dp"
         android:text="Notification reminder"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"

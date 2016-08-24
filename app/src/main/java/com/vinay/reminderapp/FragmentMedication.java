@@ -16,9 +16,11 @@ import android.widget.Button;
 public class FragmentMedication extends Fragment {
 
 	View view;
-	Button btnAddMedication;
+	Button btnAddMedication, btnMap;
 	AppCompatEditText edt_interval;
-
+	Fragment fragment;
+	FragmentTransaction fragmentTransaction;
+	FragmentManager manager;
 	public FragmentMedication() {
 	}
 
@@ -30,20 +32,27 @@ public class FragmentMedication extends Fragment {
 		view = inflater.inflate(R.layout.fragment_medication, container, false);
 
 		btnAddMedication = (Button) view.findViewById(R.id.btn_add_medication);
-
-
+		btnMap = (Button) view.findViewById(R.id.btn_map);
+		manager = getFragmentManager();
+		fragmentTransaction = manager.beginTransaction();
 		btnAddMedication.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Fragment fragment = new FragmentAddMedication();
-				FragmentManager manager = getFragmentManager();
-				FragmentTransaction fragmentTransaction = manager.beginTransaction();
+				fragment = new FragmentAddMedication();
 				fragmentTransaction.replace(R.id.container, fragment).addToBackStack
 						(FragmentMedication.class.getSimpleName()).commit();
 
 			}
 		});
 
+		btnMap.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				fragment = new MapAddressFragment();
+				fragmentTransaction.replace(R.id.container, fragment).addToBackStack
+						(FragmentMedication.class.getSimpleName()).commit();
+			}
+		});
 
 		return view;
 	}
