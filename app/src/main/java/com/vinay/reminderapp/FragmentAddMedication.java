@@ -4,6 +4,7 @@ package com.vinay.reminderapp;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -35,7 +37,8 @@ public class FragmentAddMedication extends Fragment {
 	public static final int ENDDATE_REQUEST = 2;
 	String intervalResult = "";
 	String DosageResult = "";
-
+	private AlarmManager alarmMgr;
+	private PendingIntent alarmIntent;
 	public FragmentAddMedication() {
 		// Required empty public constructor
 	}
@@ -117,7 +120,6 @@ public class FragmentAddMedication extends Fragment {
 		edt_schedule.setText(DosageResult);
 	}
 
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -179,14 +181,21 @@ public class FragmentAddMedication extends Fragment {
 	}
 
 	public void startAlert() {
-		int i = Integer.parseInt("8");
+
+		alarmMgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(getActivity(), MyBroadCastReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(
-				getActivity().getApplicationContext(), 234324243, intent, 0);
-		AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getActivity()
-				.ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-				+ (i * 1000), pendingIntent);
-		Toast.makeText(getActivity(), "Alarm set in " + i + " seconds", Toast.LENGTH_LONG).show();
+		alarmIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
+
+// Set the alarm to start at 8:30 a.m.
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.set(Calendar.HOUR_OF_DAY, 15);
+		calendar.set(Calendar.MINUTE, 00);
+
+// setRepeating() lets you specify a precise custom interval--in this case,
+// 20 minutes.
+		alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+				1000 * 60 * 10, alarmIntent);
+
 	}
 }
